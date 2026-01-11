@@ -46,10 +46,10 @@ services:
 #--- VOLUMES AND NETWORKS ---
 # tambahkan bagian volumes dan networks di sini
 
-# --- VOLUMES ---
 volumes:
-  db_data: mysql_data_${GROUP_NAME}
-  driver: local
+  db_data:
+    name: mysql_data_${GROUP_NAME}
+    driver: local
 
 # --- NETWORKS ---
 networks:
