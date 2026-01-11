@@ -98,7 +98,11 @@ app.post('/login', (req, res) => {
             req.session.user_id = result[0].id;
             res.redirect("/movies");
         } else {
-            res.status(401).json({ message: 'Username atau password salah' });
+            res.send(
+                <script>
+                    alert('Username atau password salah');
+                    window.location.href = '/';
+                </script>);
         }
     });
 });
