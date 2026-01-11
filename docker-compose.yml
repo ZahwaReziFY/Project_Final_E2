@@ -50,9 +50,11 @@ services:
 
 # --- VOLUMES ---
 volumes:
-  db_data:
+  db_data: mysql_data_${GROUP_NAME}
+  driver: local
 
 # --- NETWORKS ---
 networks:
   cinelog_network:
     driver: bridge
+    name: net_cinelog_${GROUP_NAME}
