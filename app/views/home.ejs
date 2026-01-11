@@ -76,6 +76,17 @@ body{
 .row{
   row-gap:25px;
 }
+
+/* ACTION BUTTONS */
+.card-actions{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.card-actions form{
+  display:inline;
+}
 </style>
 </head>
 
@@ -113,13 +124,56 @@ body{
       class="w-100 movie-img">
 
     <div class="p-3">
-      <h6 class="fw-bold"><%= m.title %></h6>
+      <h6 class="fw-bold">
+        <a href="/movies/<%= m.id %>" class="text-white text-decoration-none">
+          <%= m.title %>
+        </a>
+      </h6>
       <small class="text-secondary"><%= m.year %></small>
-
       <p class="mb-1 mt-2">⭐ <%= m.rating %></p>
       <span class="badge bg-info genre">
         <%= m.genre_name %>
       </span>
+
+      <div class="card-actions">
+
+        <!-- Edit Button -->
+        <a href="/movies/<%= m.id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+
+        <!-- Delete Button -->
+        <form action="/movies/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Yakin mau hapus film ini?');">
+          <button class="btn btn-danger btn-sm">Hapus</button>
+        </form>
+
+        <!-- Quick Status Buttons -->
+        <form action="/movies/<%= m.id %>/edit" method="POST" style="display:inline;">
+          <input type="hidden" name="title" value="<%= m.title %>">
+          <input type="hidden" name="year" value="<%= m.year %>">
+          <input type="hidden" name="rating" value="<%= m.rating %>">
+          <input type="hidden" name="category_id" value="<%= m.category_id %>">
+          <input type="hidden" name="status" value="Watched">
+          <button class="btn btn-success btn-sm">Watched</button>
+        </form>
+
+        <form action="/movies/<%= m.id %>/edit" method="POST" style="display:inline;">
+          <input type="hidden" name="title" value="<%= m.title %>">
+          <input type="hidden" name="year" value="<%= m.year %>">
+          <input type="hidden" name="rating" value="<%= m.rating %>">
+          <input type="hidden" name="category_id" value="<%= m.category_id %>">
+          <input type="hidden" name="status" value="Watching">
+          <button class="btn btn-primary btn-sm">Watching</button>
+        </form>
+
+        <form action="/movies/<%= m.id %>/edit" method="POST" style="display:inline;">
+          <input type="hidden" name="title" value="<%= m.title %>">
+          <input type="hidden" name="year" value="<%= m.year %>">
+          <input type="hidden" name="rating" value="<%= m.rating %>">
+          <input type="hidden" name="category_id" value="<%= m.category_id %>">
+          <input type="hidden" name="status" value="Plan to Watch">
+          <button class="btn btn-secondary btn-sm">Plan</button>
+        </form>
+
+      </div>
     </div>
 
   </div>

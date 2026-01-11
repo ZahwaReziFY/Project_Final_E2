@@ -1,28 +1,22 @@
 const express = require('express');
 const session = require('express-session');
-const path = require('path');
-
+const router = require('./routes/index');
 const app = express();
 
-// middleware
+// VIEW ENGINE
+app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// SESSION
 app.use(session({
-  secret: 'cinelog_secret',
-  resave: false,
-  saveUninitialized: true
+    secret: 'secretkey123',
+    resave: false,
+    saveUninitialized: false
 }));
 
-// view engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// ROUTES
+app.use('/', router);
 
-// routes
-const indexRoutes = require('./routes/index');
-app.use('/', indexRoutes);
-
-// server
-app.listen(3000, () => {
-  console.log('✅ Server running at http://localhost:3000');
-});
+// START SERVER
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
