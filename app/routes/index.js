@@ -22,9 +22,9 @@ app.use(
 // ===============================
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'cinelog_db'
+    user: 'fadlan',
+    password: 'password123',
+    database: 'cinelog'
 });
 
 db.connect(err => {
