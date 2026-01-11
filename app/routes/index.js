@@ -53,6 +53,33 @@ app.get('/', (req, res) => {
 });
 
 // ===============================
+// SIGN UP
+// ===============================
+app.get('/signup', (req, res) => {
+    res.render('signup');
+});
+
+app.post('/signup', (req, res) => {
+    const { username, password } = req.body;
+
+    const checkSql = `SELECT id FROM users WHERE username = ?`;
+    db.query(checkSql, [username], (err, result) => {
+        if (err) return res.status(500).json(err);
+
+        if (result.length > 0) {
+            return res.status(400).json({ message: 'Username sudah digunakan' });
+        }
+        const insertSql = 'INSERT INTO users (username, password) VALUES (?, ?)';
+        db.query(insertSql, [username, password], (err) => {
+            if (err) return res.status(500).json(err);
+            res.redirect('/login');
+        });
+    });
+});
+
+
+
+// ===============================
 // LOGIN
 // ===============================
 app.post('/login', (req, res) => {
@@ -80,8 +107,11 @@ app.post('/login', (req, res) => {
 // LOGOUT
 // ===============================
 app.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.json({ message: 'Logout berhasil' });
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout berhasil' });
+        }
+        res.redirect('/');
     });
 });
 
