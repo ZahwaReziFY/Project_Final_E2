@@ -111,7 +111,8 @@ router.post('/movies', isLogin, (req, res) => {
 
   const sql = `
     INSERT INTO movies
-    VALUES (NULL,?,?,?,?,?)
+    (title, year, rating, status, user_id, category_id)
+    VALUES (?,?,?,?,?,?)
   `;
 
   db.query(
@@ -124,12 +125,20 @@ router.post('/movies', isLogin, (req, res) => {
   );
 });
 
+
 /* =====================
    LOGOUT
 ===================== */
 router.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.redirect('/login');
+  req.session.destroy(err => {
+    if (err) {
+      console.log(err);
+      return res.redirect('/home');
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('/login');
+  });
 });
+
 
 module.exports = router;
