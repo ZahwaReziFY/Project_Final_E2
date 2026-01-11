@@ -15,7 +15,7 @@ services:
       - db_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - tekser-network
+      - cinelog-network
 
   # --- 2. APP SERVICE ---
   app_service:
@@ -33,7 +33,7 @@ services:
     depends_on:
       - db_service
     networks:
-      - tekser-network
+      - cinelog-network
 
   # --- 3. NGINX SERVICE ---
   nginx_service:
@@ -47,7 +47,7 @@ services:
     depends_on:
       - app_service
     networks:
-      - tekser-network
+      - cinelog-network
 
 #--- VOLUMES AND NETWORKS ---
 volumes:
@@ -56,6 +56,6 @@ volumes:
     driver: local
 
 networks:
-  tekser-network:
+  cinelog-network:
     driver: bridge
-    name: net_tekser_${GROUP_NAME}
+    name: net_cinelog_${GROUP_NAME}
