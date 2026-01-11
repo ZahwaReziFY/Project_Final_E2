@@ -21,11 +21,16 @@ function isLogin(req, res, next) {
     next();
 }
 
-/* ===================== LOGIN ===================== */
-router.get('/', (req, res) => res.redirect('/login'));
+/* =====================
+   LOGIN
+===================== */
+router.get('/', (req, res) => {
+  res.redirect('/login');
+});
 
+// render index.ejs sebagai halaman login
 router.get('/login', (req, res) => {
-    res.render('index', { error: null }); // tetap pakai index.ejs
+  res.render('index');
 });
 
 router.post('/login', (req, res) => {
@@ -60,16 +65,16 @@ router.post('/signup', (req, res) => {
 
 /* ===================== HOME ===================== */
 router.get('/home', isLogin, (req, res) => {
-    const sql = `
-        SELECT movies.*, categories.genre_name 
-        FROM movies 
-        JOIN categories ON movies.category_id = categories.id 
-        WHERE user_id = ?
-    `;
-    db.query(sql, [req.session.user_id], (err, movies) => {
-        if (err) throw err;
-        res.render('home', { movies });
-    });
+  const sql = `
+    SELECT movies.*, categories.genre_name
+    FROM movies
+    JOIN categories ON movies.category_id = categories.id
+    WHERE user_id = ?
+  `;
+
+  db.query(sql, [req.session.user_id], (err, result) => {
+    res.render('home', { movies: result });
+  });
 });
 
 /* ===================== ADD MOVIE ===================== */
@@ -82,75 +87,27 @@ router.get('/add-movie', isLogin, (req, res) => {
 });
 
 router.post('/movies', isLogin, (req, res) => {
-    const { title, year, rating, category_id, status } = req.body;
-    const user_id = req.session.user_id;
-    const sql = `INSERT INTO movies (title, year, rating, status, user_id, category_id) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [title, year, rating, status, user_id, category_id], err => {
-        if (err) throw err;
-        res.redirect('/home');
-    });
+  const { title, year, rating, category_id, status } = req.body;
+
+  const sql = `
+    INSERT INTO movies
+    (title, year, rating, status, user_id, category_id)
+    VALUES (?,?,?,?,?,?)
+  `;
+
+  db.query(
+    sql,
+    [title, year, rating, status, req.session.user_id, category_id],
+    err => {
+      if (err) throw err;
+      res.redirect('/home');
+    }
+  );
 });
 
-/* ===================== EDIT / UPDATE MOVIE ===================== */
-router.get('/movies/:id/edit', isLogin, (req, res) => {
-    const movie_id = req.params.id;
-    const user_id = req.session.user_id;
-    const sqlMovie = `SELECT * FROM movies WHERE id=? AND user_id=?`;
-    const sqlCategories = `SELECT * FROM categories`;
-
-    db.query(sqlMovie, [movie_id, user_id], (err, movies) => {
-        if (err) throw err;
-        if (movies.length === 0) return res.redirect('/home');
-        db.query(sqlCategories, (err, categories) => {
-            if (err) throw err;
-            res.render('edit-movie', { movie: movies[0], categories });
-        });
-    });
-});
-
-router.post('/movies/:id/edit', isLogin, (req, res) => {
-    const movie_id = req.params.id;
-    const user_id = req.session.user_id;
-    const { title, year, rating, status, category_id } = req.body;
-
-    const sql = `UPDATE movies SET title=?, year=?, rating=?, status=?, category_id=? WHERE id=? AND user_id=?`;
-    db.query(sql, [title, year, rating, status, category_id, movie_id, user_id], err => {
-        if (err) throw err;
-        res.redirect('/home');
-    });
-});
-
-/* ===================== DELETE MOVIE ===================== */
-router.post('/movies/:id/delete', isLogin, (req, res) => {
-    const movie_id = req.params.id;
-    const user_id = req.session.user_id;
-
-    const sql = `DELETE FROM movies WHERE id=? AND user_id=?`;
-    db.query(sql, [movie_id, user_id], err => {
-        if (err) throw err;
-        res.redirect('/home');
-    });
-});
-
-/* ===================== DETAIL MOVIE ===================== */
-router.get('/movies/:id', isLogin, (req, res) => {
-    const movie_id = req.params.id;
-    const user_id = req.session.user_id;
-
-    const sql = `
-        SELECT movies.*, categories.genre_name 
-        FROM movies 
-        JOIN categories ON movies.category_id = categories.id 
-        WHERE movies.id=? AND user_id=?
-    `;
-    db.query(sql, [movie_id, user_id], (err, result) => {
-        if (err) throw err;
-        if (result.length === 0) return res.redirect('/home');
-        res.render('movie-detail', { movie: result[0] });
-    });
-});
-
-/* ===================== LOGOUT ===================== */
+/* =====================
+   LOGOUT
+===================== */
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) console.log('Logout error:', err);
