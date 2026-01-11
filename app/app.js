@@ -1,19 +1,28 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mainRoutes = require("./routes/index");
+const express = require('express');
+const session = require('express-session');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.APP_PORT || 3000;
 
-// --- MIDDLEWARE ---
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use(bodyParser.urlencoded({ extended: true }));
+// middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// ROUTE API
-app.use('/', mainRoutes);
+app.use(session({
+  secret: 'cinelog_secret',
+  resave: false,
+  saveUninitialized: true
+}));
 
-// JALANKAN SERVER
-app.listen(PORT,()=>{
-    console.log(`Server running at http://localhost:${PORT}`);
+// view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// routes
+const indexRoutes = require('./routes/index');
+app.use('/', indexRoutes);
+
+// server
+app.listen(3000, () => {
+  console.log('✅ Server running at http://localhost:3000');
 });
