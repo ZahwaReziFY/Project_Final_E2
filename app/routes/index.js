@@ -142,7 +142,7 @@ app.get('/movies', isLogin, (req, res) => {
 // CREATE MOVIE
 // ===============================
 app.get('/add-movie', isLogin, (req, res) => {
-    res.render("movies")
+    res.redirect("/movies")
 })
 
 app.post('/movies', isLogin, (req, res) => {
@@ -160,7 +160,7 @@ app.post('/movies', isLogin, (req, res) => {
         [title, year, rating, category_id, user_id, status],
         err => {
             if (err) return res.status(500).json(err);
-            res.redirect("movies")
+            res.render("home", { movies: result});
         }
     );
 });
