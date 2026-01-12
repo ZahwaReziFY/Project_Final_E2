@@ -3,6 +3,7 @@ const session = require('express-session');
 const path = require('path');
 
 const app = express();
+const PORT = process.env.APP_PORT || 2585;
 const routes = require('./routes/index')
 
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +20,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use('/', routes);
 
-const PORT = process.env.APP_PORT || 2585;
+
 app.listen(PORT, () => {
   console.log(`🚀 App running on port ${PORT}`);
 });
