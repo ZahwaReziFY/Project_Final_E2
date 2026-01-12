@@ -1,25 +1,25 @@
-const express = require('express');
-const session = require('express-session');
-const path = require('path');
+const express = require("express");
+const session = require("express-session");
+const bodyParser = require("body-parser");
 
 const app = express();
-const routes = require('./routes/index')
+const routes = require("./routes/index");
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: 'cinelog_secret',
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: "cinelog_secret",
+    resave: false,
+    saveUninitialized: true
+  })
+);
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// ⬅️ PENTING: router dipakai di root "/"
+app.use("/", routes);
 
-app.use('/', routes);
-
-const PORT = process.env.APP_PORT || 2585;
-app.listen(PORT, () => {
-  console.log(`🚀 App running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log("Server running http://localhost:3000");
 });

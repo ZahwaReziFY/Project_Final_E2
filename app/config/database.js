@@ -1,23 +1,15 @@
-const mysql = require("mysql2");
-require("dotenv").config();
+const mysql = require('mysql2');
 
-const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'cinelog_db'
 });
 
-db.getConnection()
-  .then((connection) => {
-    console.log("✅ Database connected successfully");
-    connection.release();
-  })
-  .catch((err) => {
-    console.error("❌ Database connection failed:", err.message);
-  });
+db.connect(err => {
+  if (err) console.log('❌ DB Error', err);
+  else console.log('✅ Database connected');
+});
 
 module.exports = db;
