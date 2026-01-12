@@ -3,25 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Login | CINELOG</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- BOOTSTRAP -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- GOOGLE FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
 body{
   height:100vh;
   background:
-    linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.9)),
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.7)),
     url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4");
   background-size:cover;
   background-position:center;
@@ -29,206 +19,71 @@ body{
   align-items:center;
   justify-content:center;
   font-family:'Montserrat', sans-serif;
-  overflow:hidden;
 }
 
-/* logo */
-.logo{
-  position:absolute;
-  top:25px;
-  left:50px;
-  font-size:38px;
-  font-weight:900;
-  color:#e50914;
-  letter-spacing:5px;
-  font-family:'Bebas Neue', cursive;
-  text-shadow:0 0 20px #e50914;
-}
-
-/* ===== GLOW WRAPPER ===== */
-.glow-wrapper{
-  position:relative;
-}
-
-.glow-wrapper::before{
-  content:'';
-  position:absolute;
-  inset:-4px;
-  background:linear-gradient(
-    45deg,
-    #ff0000,
-    #ff004c,
-    #ff7300,
-    #ff0000
-  );
-  filter:blur(25px);
-  z-index:-1;
-  animation:glow 4s linear infinite;
-  opacity:.9;
-}
-
-/* animasi glow */
-@keyframes glow{
-  0%{filter:blur(20px) hue-rotate(0deg)}
-  100%{filter:blur(20px) hue-rotate(360deg)}
-}
-
-/* login box */
+/* box */
 .login-box{
-  width:400px;
+  background:rgba(0,0,0,.78);
   padding:45px;
-  background:rgba(0,0,0,.88);
-  border-radius:10px;
-  box-shadow:0 0 40px rgba(229,9,20,.6);
-  animation:float 3s ease-in-out infinite;
-  position:relative;
-  z-index:2;
-}
-
-/* animasi floating */
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
+  border-radius:12px;
+  width:380px;
+  box-shadow:0 0 30px rgba(229,9,20,.5);
 }
 
 /* title */
 .login-box h2{
-  color:#fff;
-  font-weight:800;
-  margin-bottom:25px;
   font-family:'Bebas Neue', cursive;
-  letter-spacing:2px;
-  font-size:32px;
+  color:#e50914;
   text-align:center;
+  letter-spacing:3px;
+  margin-bottom:25px;
 }
 
 /* input */
 .form-control{
-  background:#333;
+  background:#1f2937;
   border:none;
-  height:50px;
-  color:#fff;
-  font-size:14px;
-  font-family:'Montserrat', sans-serif;
+  color:white;
 }
-
 .form-control:focus{
-  background:#444;
-  color:#fff;
-  box-shadow:0 0 12px #e50914;
-}
-
-/* floating label */
-.field{
-  position:relative;
-  margin-bottom:20px;
-}
-
-.field label{
-  position:absolute;
-  top:50%;
-  left:15px;
-  transform:translateY(-50%);
-  color:#aaa;
-  pointer-events:none;
-  transition:.3s;
-  font-family:'Montserrat', sans-serif;
-}
-
-.field input:focus + label,
-.field input:not(:placeholder-shown)+label{
-  top:5px;
-  font-size:11px;
-  color:#e50914;
+  background:#374151;
+  color:white;
+  box-shadow:none;
 }
 
 /* button */
 .btn-login{
   background:#e50914;
   border:none;
-  height:50px;
   font-weight:700;
-  letter-spacing:2px;
-  font-family:'Bebas Neue', cursive;
-  font-size:18px;
-  transition:.3s;
 }
-
 .btn-login:hover{
   background:#ff1c24;
-  transform:scale(1.05);
-  box-shadow:0 0 20px #e50914;
-}
-
-.help{
-  font-size:13px;
-  color:#b3b3b3;
-}
-
-footer{
-  position:absolute;
-  bottom:20px;
-  color:#777;
-  font-size:12px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="logo">CINELOG</div>
-
-<div class="glow-wrapper">
 <div class="login-box">
-
-<h2>WELCOME BACK</h2>
-
-<!-- ALERT ERROR -->
-<% if (typeof error !== 'undefined') { %>
-<div class="alert alert-danger text-center">
-<%= error %>
-</div>
-<% } %>
+<h2>CINELOG</h2>
 
 <form action="/login" method="POST">
+<input name="username" class="form-control mb-3" placeholder="Username" required>
+<input name="password" type="password" class="form-control mb-3" placeholder="Password" required>
 
-<div class="field">
-<input type="text" name="username" class="form-control" placeholder=" " required>
-<label>Username / Email</label>
-</div>
-
-<div class="field">
-<input type="password" name="password" class="form-control" placeholder=" " required>
-<label>Password</label>
-</div>
-
-<button class="btn btn-login w-100">
+<button class="btn btn-login w-100 py-2">
 SIGN IN
 </button>
-
 </form>
 
-<div class="d-flex justify-content-between mt-3 help">
-<div>
-<input type="checkbox"> Remember me
-</div>
-<div>
-Need help?
-</div>
-</div>
-
-<div class="mt-4 help text-center">
-New to CINELOG? 
-<a href="/signup" class="text-white fw-bold text-decoration-none">
-  Sign up now.
+<div class="text-center mt-3 text-secondary">
+Belum punya akun?
+<a href="/signup" class="text-danger fw-bold text-decoration-none">
+Sign Up
 </a>
-
 </div>
 </div>
-
-<footer>
-© 2026 CINELOG Streaming System
-</footer>
 
 </body>
 </html>
